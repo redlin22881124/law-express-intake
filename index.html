@@ -45,15 +45,15 @@
     }
     .field { margin-bottom: 16px; }
     label, .field-title { display: block; font-size: 16px; font-weight: 700; color: var(--navy); margin: 0 0 8px; }
-    .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; }
     .choice {
-      display: flex; align-items: center; gap: 12px;
-      min-height: 52px; padding: 0 16px; border: 1px solid var(--line); border-radius: 16px;
-      background: var(--input); color: var(--ink); font-size: 18px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--input); color: var(--ink); font-size: 16px; font-weight: 600; cursor: pointer;
     }
     .choice input[type="radio"] {
       appearance: auto; -webkit-appearance: radio;
-      width: 22px; height: 22px; min-height: 22px; margin: 0; flex-shrink: 0;
+      width: 16px; height: 16px; min-height: 16px; margin: 0; flex-shrink: 0;
       accent-color: var(--accent); position: static; opacity: 1; pointer-events: auto;
     }
     .choice:has(input:checked) {
@@ -119,7 +119,7 @@
       </div>
     </div>
   </main>
-  <script src="./questions.js?v=g2"></script>
+  <script src="./questions.js?v=g3"></script>
   <script>
     (function ensureGenderChoices() {
       var fallback = ["男", "女", "其他", "不便說明"];
