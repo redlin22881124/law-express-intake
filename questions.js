@@ -1,3 +1,5 @@
+window.INTAKE_API_BASE = "https://smart-wardrobe-api-dpks.onrender.com";
+
 window.INTAKE_FORM = {
   kinds: [
     { id: 'traffic', label: '車禍' },

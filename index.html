@@ -18,7 +18,9 @@
     textarea { min-height:96px; resize:vertical; }
     button { width:100%; min-height:50px; margin-top:12px; border:0; border-radius:14px; background:var(--accent); color:#fff; font-size:16px; font-weight:700; }
     button.secondary { background:#FAF8F4; color:var(--navy); border:1px solid var(--line); }
+    button:disabled { opacity:.65; }
     .note { font-size:12px; line-height:18px; color:var(--muted); background:#EEEAE3; border-radius:14px; padding:12px; margin-top:16px; }
+    .error { font-size:13px; line-height:20px; color:#B45309; margin-top:10px; }
     .token { word-break:break-all; background:var(--card); border-radius:14px; padding:12px; font-size:13px; line-height:20px; }
     .hidden { display:none; }
   </style>
@@ -33,18 +35,21 @@
   <main id="form-view" class="hidden">
     <div class="kicker" id="kind-label"></div>
     <h1>諮詢前請先填這些</h1>
-    <p>填完請傳回給律師。這不是法律諮詢。</p>
+    <p>填完按送出即可。不必下載 App，也不必再傳回來。這不是法律諮詢。</p>
     <form id="form"></form>
-    <p class="note">請只把回傳連結給律師。連結含你填的資料。</p>
+    <p id="form-error" class="error hidden"></p>
+    <p class="note">資料只會送給發出這份連結的律師。</p>
   </main>
   <main id="done-view" class="hidden">
     <div class="kicker">不必下載 App</div>
-    <h1>請傳回給律師</h1>
-    <p>按下面按鈕用 LINE 傳回。請只傳給律師。</p>
-    <button type="button" id="line-btn">用 LINE 傳回律師</button>
-    <button type="button" class="secondary" id="copy-btn">複製回傳連結</button>
-    <p>若按鈕沒反應，請複製下面連結傳給律師。</p>
-    <div class="token" id="return-url"></div>
+    <h1 id="done-title">已送給律師</h1>
+    <p id="done-lead">可以關閉此頁。律師的待諮詢列表會自動出現這份資料。</p>
+    <div id="return-actions" class="hidden">
+      <button type="button" id="line-btn">用 LINE 傳回律師</button>
+      <button type="button" class="secondary" id="copy-btn">複製回傳連結</button>
+      <p>若按鈕沒反應，請複製下面連結傳給律師。</p>
+      <div class="token" id="return-url"></div>
+    </div>
   </main>
   <script src="./questions.js"></script>
   <script>
@@ -55,8 +60,10 @@
       return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
     }
     const spec = window.INTAKE_FORM;
+    const apiBase = (window.INTAKE_API_BASE || "").replace(/\/$/, "");
     const params = new URLSearchParams(location.search);
     const rid = params.get("rid") || "";
+    const inboxId = params.get("inbox") || "";
     let kindId = params.get("k") || "";
 
     function questionsFor(id) {
@@ -81,35 +88,26 @@
       });
       const submit = document.createElement("button");
       submit.type = "submit";
-      submit.textContent = "填完，傳回律師";
+      submit.id = "submit-btn";
+      submit.textContent = "填完，送給律師";
       form.appendChild(submit);
       document.getElementById("picker-view").classList.add("hidden");
       document.getElementById("form-view").classList.remove("hidden");
     }
 
-    spec.kinds.forEach((item) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = item.label;
-      btn.onclick = function () { showForm(item.id); };
-      document.getElementById("kind-buttons").appendChild(btn);
-    });
+    function showSent() {
+      document.getElementById("done-title").textContent = "已送給律師";
+      document.getElementById("done-lead").textContent = "可以關閉此頁。律師的待諮詢列表會自動出現這份資料。";
+      document.getElementById("return-actions").classList.add("hidden");
+      document.getElementById("form-view").classList.add("hidden");
+      document.getElementById("done-view").classList.remove("hidden");
+    }
 
-    if (kindId) showForm(kindId);
-
-    document.getElementById("form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const { kind, questions } = questionsFor(kindId);
-      const answers = {};
-      questions.forEach((q) => {
-        const value = document.getElementById(q.id).value.trim();
-        if (value) answers[q.id] = value;
-      });
-      const payload = { v: 1, k: kind.id, a: answers };
-      if (rid) payload.id = rid;
-      const token = "LE1." + utf8ToBase64Url(JSON.stringify(payload));
-      const returnUrl = new URL("r.html", location.href).toString() + "#" + encodeURIComponent(token);
+    function showReturnLink(returnUrl) {
+      document.getElementById("done-title").textContent = "請傳回給律師";
+      document.getElementById("done-lead").textContent = "這次無法直接送到律師端。請按下面按鈕用 LINE 傳回，請只傳給律師。";
       document.getElementById("return-url").textContent = returnUrl;
+      document.getElementById("return-actions").classList.remove("hidden");
       document.getElementById("form-view").classList.add("hidden");
       document.getElementById("done-view").classList.remove("hidden");
       const message = "諮詢前資料已填完。請律師用手機點連結，會進入法律快易通「待諮詢」：\n" + returnUrl;
@@ -122,6 +120,58 @@
           this.textContent = "已複製";
         } catch (e) {}
       };
+    }
+
+    function buildReturnUrl(kind, answers) {
+      const payload = { v: 1, k: kind.id, a: answers };
+      if (rid) payload.id = rid;
+      const token = "LE1." + utf8ToBase64Url(JSON.stringify(payload));
+      return new URL("r.html", location.href).toString() + "#" + encodeURIComponent(token);
+    }
+
+    spec.kinds.forEach((item) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = item.label;
+      btn.onclick = function () { showForm(item.id); };
+      document.getElementById("kind-buttons").appendChild(btn);
+    });
+
+    if (kindId) showForm(kindId);
+
+    document.getElementById("form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const { kind, questions } = questionsFor(kindId);
+      const answers = {};
+      questions.forEach((q) => {
+        const value = document.getElementById(q.id).value.trim();
+        if (value) answers[q.id] = value;
+      });
+      const errorEl = document.getElementById("form-error");
+      const submitBtn = document.getElementById("submit-btn");
+      errorEl.classList.add("hidden");
+      if (apiBase && /^ib_[a-f0-9]{32}$/.test(inboxId)) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "送出中…";
+        try {
+          const body = { inboxId: inboxId, kind: kind.id, answers: answers };
+          if (rid) body.id = rid;
+          const response = await fetch(apiBase + "/v1/law-express/intakes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          if (response.ok) {
+            showSent();
+            return;
+          }
+        } catch (e) {}
+        submitBtn.disabled = false;
+        submitBtn.textContent = "填完，送給律師";
+        errorEl.textContent = "無法直接送出，請改用下面的回傳連結。";
+        errorEl.classList.remove("hidden");
+      }
+      showReturnLink(buildReturnUrl(kind, answers));
     });
   </script>
 </body>
