@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>諮詢前資料</title>
+  <title>諮詢預約</title>
   <style>
     :root {
       --bg: #F3F0EA;
@@ -27,166 +27,63 @@
       color: var(--ink);
     }
     main { max-width: 640px; margin: 0 auto; padding: 28px 20px 64px; }
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
+    .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
     .mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
-      background: var(--accent);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 36px; height: 36px; border-radius: 12px; background: var(--accent); color: #fff;
+      font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center;
     }
-    .brand { font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: .2px; }
+    .brand { font-size: 15px; font-weight: 700; color: var(--navy); }
     .step {
-      display: inline-block;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 14px;
-      font-weight: 700;
-      border-radius: 999px;
-      padding: 6px 12px;
-      margin-bottom: 10px;
+      display: inline-block; background: var(--accent-soft); color: var(--accent);
+      font-size: 14px; font-weight: 700; border-radius: 999px; padding: 6px 12px; margin-bottom: 10px;
     }
     h1 { font-size: 28px; line-height: 38px; color: var(--navy); margin: 0 0 10px; font-weight: 800; }
     .lead { color: var(--muted); font-size: 17px; line-height: 28px; margin: 0 0 22px; }
     .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px 18px 20px;
-      box-shadow: 0 10px 30px rgba(30, 41, 59, .06);
+      background: var(--card); border: 1px solid var(--line); border-radius: 22px;
+      padding: 22px 18px 20px; box-shadow: 0 10px 30px rgba(30, 41, 59, .06);
     }
-    .kind-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    @media (min-width: 420px) {
-      .kind-grid { grid-template-columns: 1fr 1fr; }
-      .kind-grid .span-all { grid-column: 1 / -1; }
-    }
-    .kind-card {
-      width: 100%;
-      min-height: 76px;
-      margin: 0;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--input);
-      color: var(--ink);
-      text-align: left;
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
-    .kind-card:active { border-color: var(--accent); background: var(--accent-soft); }
-    .kind-label { font-size: 19px; font-weight: 800; color: var(--navy); }
-    .kind-hint { font-size: 14px; line-height: 20px; color: var(--muted); font-weight: 500; }
     .field { margin-bottom: 16px; }
     label { display: block; font-size: 16px; font-weight: 700; color: var(--navy); margin: 0 0 8px; }
     input, textarea {
-      width: 100%;
-      min-height: 56px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px 16px;
-      font-size: 18px;
-      line-height: 26px;
-      background: var(--input);
-      color: var(--ink);
+      width: 100%; min-height: 56px; border: 1px solid var(--line); border-radius: 16px;
+      padding: 14px 16px; font-size: 18px; line-height: 26px; background: var(--input); color: var(--ink);
     }
     textarea { min-height: 112px; resize: vertical; }
     input:focus, textarea:focus {
-      outline: 2px solid rgba(15, 118, 110, .35);
-      border-color: var(--accent);
-      background: #fff;
+      outline: 2px solid rgba(15, 118, 110, .35); border-color: var(--accent); background: #fff;
     }
-    .actions { margin-top: 8px; }
     button {
-      width: 100%;
-      min-height: 56px;
-      margin-top: 10px;
-      border: 0;
-      border-radius: 16px;
-      background: var(--accent);
-      color: #fff;
-      font-size: 18px;
-      font-weight: 800;
+      width: 100%; min-height: 56px; margin-top: 8px; border: 0; border-radius: 16px;
+      background: var(--accent); color: #fff; font-size: 18px; font-weight: 800;
     }
-    button.secondary {
-      background: #fff;
-      color: var(--navy);
-      border: 1px solid var(--line);
-      font-weight: 700;
-    }
+    button.secondary { background: #fff; color: var(--navy); border: 1px solid var(--line); font-weight: 700; }
     button:disabled { opacity: .65; }
     .note {
-      font-size: 14px;
-      line-height: 22px;
-      color: var(--muted);
-      background: #EEEAE3;
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin-top: 16px;
+      font-size: 14px; line-height: 22px; color: var(--muted); background: #EEEAE3;
+      border-radius: 16px; padding: 14px 16px; margin-top: 16px;
     }
     .error { font-size: 15px; line-height: 22px; color: #B45309; margin: 10px 0 0; }
     .token {
-      word-break: break-all;
-      background: var(--card);
-      border-radius: 16px;
-      padding: 14px;
-      font-size: 15px;
-      line-height: 22px;
-      border: 1px solid var(--line);
+      word-break: break-all; background: var(--card); border-radius: 16px; padding: 14px;
+      font-size: 15px; line-height: 22px; border: 1px solid var(--line);
     }
     .done-mark {
-      width: 56px;
-      height: 56px;
-      border-radius: 28px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 28px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
+      width: 56px; height: 56px; border-radius: 28px; background: var(--accent-soft); color: var(--accent);
+      font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
     }
     .hidden { display: none; }
   </style>
 </head>
 <body>
-  <main id="picker-view">
+  <main id="form-view">
     <div class="topbar">
       <div class="mark">法</div>
       <div class="brand">法律快易通</div>
     </div>
-    <div class="step">1／2　選類型</div>
-    <h1>這次想談哪一類？</h1>
+    <div class="step">諮詢預約</div>
+    <h1>請填這張預約單</h1>
     <p class="lead">直接填即可，不必下載 App。這不是法律諮詢。</p>
-    <div class="card">
-      <div id="kind-buttons" class="kind-grid"></div>
-    </div>
-  </main>
-  <main id="form-view" class="hidden">
-    <div class="topbar">
-      <div class="mark">法</div>
-      <div class="brand">法律快易通</div>
-    </div>
-    <div class="step">2／2　填資料</div>
-    <div class="kicker-space" id="kind-label" style="color:var(--accent);font-size:16px;font-weight:800;margin-bottom:6px;"></div>
-    <h1>諮詢前請先填這些</h1>
-    <p class="lead">填完按送出即可。不必再傳回來。這不是法律諮詢。</p>
     <div class="card">
       <form id="form"></form>
       <p id="form-error" class="error hidden"></p>
@@ -201,7 +98,7 @@
     <div class="card">
       <div class="done-mark">✓</div>
       <h1 id="done-title">已送給律師</h1>
-      <p class="lead" id="done-lead">可以關閉此頁。律師的待諮詢列表會自動出現這份資料。</p>
+      <p class="lead" id="done-lead">可以關閉此頁。律師端會自動出現這張預約單。</p>
       <div id="return-actions" class="hidden">
         <button type="button" id="copy-btn">複製回傳連結</button>
         <p class="lead">若沒反應，請複製下面連結傳給律師。</p>
@@ -219,63 +116,34 @@
     }
     const spec = window.INTAKE_FORM;
     const apiBase = (window.INTAKE_API_BASE || "").replace(/\/$/, "");
-    const params = new URLSearchParams(location.search);
-    const inboxId = params.get("inbox") || "";
-    let kindId = "";
+    const inboxId = new URLSearchParams(location.search).get("inbox") || "";
+    const questions = spec.questions || [];
 
-    function questionsFor(id) {
-      const kind = spec.kinds.find((item) => item.id === id) || spec.kinds.find((item) => item.id === "other") || spec.kinds[0];
-      return { kind: kind, questions: spec.shared.concat(spec.byKind[kind.id] || spec.byKind.other) };
-    }
-
-    function showForm(id) {
-      const { kind, questions } = questionsFor(id);
-      kindId = kind.id;
-      document.getElementById("kind-label").textContent = kind.label;
-      const form = document.getElementById("form");
-      form.innerHTML = "";
-      questions.forEach((q) => {
-        const wrap = document.createElement("div");
-        wrap.className = "field";
-        const label = document.createElement("label");
-        label.textContent = q.label;
-        label.setAttribute("for", q.id);
-        const field = document.createElement(q.multiline ? "textarea" : "input");
-        field.id = q.id;
-        field.placeholder = q.placeholder || "";
-        wrap.appendChild(label);
-        wrap.appendChild(field);
-        form.appendChild(wrap);
-      });
-      const actions = document.createElement("div");
-      actions.className = "actions";
-      const submit = document.createElement("button");
-      submit.type = "submit";
-      submit.id = "submit-btn";
-      submit.textContent = "填完，送給律師";
-      const change = document.createElement("button");
-      change.type = "button";
-      change.className = "secondary";
-      change.textContent = "改選類型";
-      change.onclick = function () {
-        document.getElementById("form-view").classList.add("hidden");
-        document.getElementById("picker-view").classList.remove("hidden");
-        window.scrollTo(0, 0);
-      };
-      actions.appendChild(submit);
-      actions.appendChild(change);
-      form.appendChild(actions);
-      document.getElementById("picker-view").classList.add("hidden");
-      document.getElementById("form-view").classList.remove("hidden");
-      window.scrollTo(0, 0);
-    }
+    const form = document.getElementById("form");
+    questions.forEach((q) => {
+      const wrap = document.createElement("div");
+      wrap.className = "field";
+      const label = document.createElement("label");
+      label.textContent = q.label;
+      label.setAttribute("for", q.id);
+      const field = document.createElement(q.multiline ? "textarea" : "input");
+      field.id = q.id;
+      field.placeholder = q.placeholder || "";
+      wrap.appendChild(label);
+      wrap.appendChild(field);
+      form.appendChild(wrap);
+    });
+    const submit = document.createElement("button");
+    submit.type = "submit";
+    submit.id = "submit-btn";
+    submit.textContent = "送出預約";
+    form.appendChild(submit);
 
     function showSent() {
       document.getElementById("done-title").textContent = "已送給律師";
-      document.getElementById("done-lead").textContent = "可以關閉此頁。律師的待諮詢列表會自動出現這份資料。";
+      document.getElementById("done-lead").textContent = "可以關閉此頁。律師端會自動出現這張預約單。";
       document.getElementById("return-actions").classList.add("hidden");
       document.getElementById("form-view").classList.add("hidden");
-      document.getElementById("picker-view").classList.add("hidden");
       document.getElementById("done-view").classList.remove("hidden");
       window.scrollTo(0, 0);
     }
@@ -286,7 +154,6 @@
       document.getElementById("return-url").textContent = returnUrl;
       document.getElementById("return-actions").classList.remove("hidden");
       document.getElementById("form-view").classList.add("hidden");
-      document.getElementById("picker-view").classList.add("hidden");
       document.getElementById("done-view").classList.remove("hidden");
       document.getElementById("copy-btn").onclick = async function () {
         try {
@@ -297,31 +164,8 @@
       window.scrollTo(0, 0);
     }
 
-    function buildReturnUrl(kind, answers) {
-      const payload = { v: 1, k: kind.id, a: answers };
-      const token = "LE1." + utf8ToBase64Url(JSON.stringify(payload));
-      return new URL("r.html", location.href).toString() + "#" + encodeURIComponent(token);
-    }
-
-    spec.kinds.forEach((item) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "kind-card" + (item.id === "other" ? " span-all" : "");
-      const label = document.createElement("span");
-      label.className = "kind-label";
-      label.textContent = item.label;
-      const hint = document.createElement("span");
-      hint.className = "kind-hint";
-      hint.textContent = item.hint || "";
-      btn.appendChild(label);
-      btn.appendChild(hint);
-      btn.onclick = function () { showForm(item.id); };
-      document.getElementById("kind-buttons").appendChild(btn);
-    });
-
-    document.getElementById("form").addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const { kind, questions } = questionsFor(kindId);
       const answers = {};
       questions.forEach((q) => {
         const value = document.getElementById(q.id).value.trim();
@@ -334,11 +178,10 @@
         submitBtn.disabled = true;
         submitBtn.textContent = "送出中…";
         try {
-          const body = { inboxId: inboxId, kind: kind.id, answers: answers };
           const response = await fetch(apiBase + "/v1/law-express/intakes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            body: JSON.stringify({ inboxId: inboxId, kind: spec.kind || "other", answers: answers }),
           });
           if (response.ok) {
             showSent();
@@ -346,11 +189,12 @@
           }
         } catch (e) {}
         submitBtn.disabled = false;
-        submitBtn.textContent = "填完，送給律師";
+        submitBtn.textContent = "送出預約";
         errorEl.textContent = "無法直接送出，請改用下面的回傳連結。";
         errorEl.classList.remove("hidden");
       }
-      showReturnLink(buildReturnUrl(kind, answers));
+      const token = "LE1." + utf8ToBase64Url(JSON.stringify({ v: 1, k: spec.kind || "other", a: answers }));
+      showReturnLink(new URL("r.html", location.href).toString() + "#" + encodeURIComponent(token));
     });
   </script>
 </body>
