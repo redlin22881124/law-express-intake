@@ -4,10 +4,11 @@ window.INTAKE_FORM = {
   kinds: [
     { id: "traffic", label: "車禍", hint: "交通事故、求償、鑑定" },
     { id: "criminal", label: "刑事", hint: "告訴、被告、筆錄、傳票" },
-    { id: "family", label: "家事", hint: "離婚、監護、扶養" },
+    { id: "family", label: "家事", hint: "離婚、監護、扶養、家暴" },
+    { id: "inheritance", label: "繼承／遺產", hint: "遺囑、拋棄繼承、分割" },
     { id: "labor", label: "勞資", hint: "資遣、加班費、職災" },
-    { id: "civil", label: "民事／契約", hint: "欠款、契約、損害賠償" },
-    { id: "lease", label: "房屋／租賃", hint: "租金、押金、遷讓" },
+    { id: "civil", label: "民事／契約／欠款", hint: "契約、貨款、損害賠償" },
+    { id: "debt", label: "債務／強制執行", hint: "卡債、本票、支付命令" },
     { id: "other", label: "其他", hint: "以上都不是，先寫經過" },
   ],
   shared: [
@@ -41,6 +42,13 @@ window.INTAKE_FORM = {
       { id: "topics", label: "想談的事項", placeholder: "離婚、監護、扶養、家暴等，請自行填寫", multiline: true },
       { id: "prior", label: "是否已有保護令、調解或訴訟", placeholder: "有／沒有，若有請註明" },
     ],
+    inheritance: [
+      { id: "relation", label: "與被繼承人關係", placeholder: "配偶、子女、其他親屬" },
+      { id: "will", label: "是否已有遺囑", placeholder: "有／沒有，手寫或公證若知道可填" },
+      { id: "estate", label: "遺產大概有哪些", placeholder: "不動產、存款、保險、公司股權等", multiline: true },
+      { id: "heirs", label: "繼承人與有無爭議", placeholder: "幾人、是否有人要拋棄或爭執", multiline: true },
+      { id: "prior", label: "是否已辦理繼承、拋棄或分割", placeholder: "有／沒有，若有請註明" },
+    ],
     labor: [
       { id: "job", label: "公司與職稱", placeholder: "公司名稱、做什麼" },
       { id: "dates", label: "到職、離職或爭議日期", placeholder: "例如到職 113/1、爭議 115/2" },
@@ -50,15 +58,16 @@ window.INTAKE_FORM = {
     civil: [
       { id: "dispute", label: "爭議是什麼", placeholder: "欠款、契約、損害賠償等，請自行填寫", multiline: true },
       { id: "amount", label: "金額或標的（若有）", placeholder: "例如積欠 20 萬、貨款未付" },
-      { id: "contract", label: "有無契約或往來證明", placeholder: "合約、LINE、轉帳紀錄等" },
+      { id: "contract", label: "有無契約或往來證明", placeholder: "合約、訊息、轉帳紀錄等" },
       { id: "timeline", label: "事件經過（請依時間寫）", placeholder: "先寫日期，再寫發生什麼", multiline: true },
       { id: "prior", label: "是否已發存證信函或起訴", placeholder: "有／沒有，若有請註明" },
     ],
-    lease: [
-      { id: "place", label: "物件與身分", placeholder: "地址（可略）、房東或房客" },
-      { id: "term", label: "租期與租金", placeholder: "例如月租 2.5 萬、押金兩個月" },
-      { id: "topics", label: "想談的事項", placeholder: "欠租、押金、修繕、遷讓等", multiline: true },
-      { id: "prior", label: "是否已存證、調解或起訴", placeholder: "有／沒有，若有請註明" },
+    debt: [
+      { id: "role", label: "目前身分", placeholder: "債權人／債務人／保證人" },
+      { id: "amount", label: "金額與債務來源", placeholder: "例如卡債、民間借貸、本票 50 萬" },
+      { id: "stage", label: "目前進度", placeholder: "催收、本票、支付命令、強制執行、扣薪" },
+      { id: "timeline", label: "事件經過（請依時間寫）", placeholder: "先寫日期，再寫發生什麼", multiline: true },
+      { id: "prior", label: "是否已有判決、支付命令或執行", placeholder: "有／沒有，若有請註明" },
     ],
     other: [
       { id: "timeline", label: "事件經過（請依時間寫）", placeholder: "先寫日期，再寫發生什麼", multiline: true },
