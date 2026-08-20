@@ -45,23 +45,26 @@
     }
     .field { margin-bottom: 16px; }
     label, .field-title { display: block; font-size: 16px; font-weight: 700; color: var(--navy); margin: 0 0 8px; }
-    .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+    .choices { display: flex; flex-direction: column; gap: 8px; }
     .choice {
-      position: relative;
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px;
-      background: var(--input); color: var(--ink); font-size: 16px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 12px;
+      min-height: 52px; padding: 0 16px; border: 1px solid var(--line); border-radius: 16px;
+      background: var(--input); color: var(--ink); font-size: 18px; font-weight: 600; cursor: pointer;
     }
-    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice input[type="radio"] {
+      appearance: auto; -webkit-appearance: radio;
+      width: 22px; height: 22px; min-height: 22px; margin: 0; flex-shrink: 0;
+      accent-color: var(--accent); position: static; opacity: 1; pointer-events: auto;
+    }
     .choice:has(input:checked) {
-      background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 800;
+      background: var(--accent-soft); border-color: var(--accent); color: var(--navy);
     }
-    input, textarea {
+    input:not([type="radio"]), textarea {
       width: 100%; min-height: 56px; border: 1px solid var(--line); border-radius: 16px;
       padding: 14px 16px; font-size: 18px; line-height: 26px; background: var(--input); color: var(--ink);
     }
     textarea { min-height: 112px; resize: vertical; }
-    input:focus, textarea:focus {
+    input:not([type="radio"]):focus, textarea:focus {
       outline: 2px solid rgba(15, 118, 110, .35); border-color: var(--accent); background: #fff;
     }
     button {
@@ -116,8 +119,19 @@
       </div>
     </div>
   </main>
-  <script src="./questions.js"></script>
+  <script src="./questions.js?v=g2"></script>
   <script>
+    (function ensureGenderChoices() {
+      var fallback = ["男", "女", "其他", "不便說明"];
+      var spec = window.INTAKE_FORM;
+      if (!spec || !spec.questions) return;
+      spec.questions = spec.questions.map(function (q) {
+        if (q.id === "gender" && !(q.choices && q.choices.length)) {
+          return { id: "gender", label: q.label || "性別", choices: fallback };
+        }
+        return q;
+      });
+    })();
     function utf8ToBase64Url(text) {
       const bytes = new TextEncoder().encode(text);
       let binary = "";
