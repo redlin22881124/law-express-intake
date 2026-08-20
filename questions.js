@@ -3,11 +3,11 @@ window.INTAKE_API_BASE = "https://smart-wardrobe-api-dpks.onrender.com";
 window.INTAKE_FORM = {
   kind: "other",
   questions: [
-    { id: "name", label: "姓名", placeholder: "全名或姓氏皆可" },
-    { id: "gender", label: "性別", placeholder: "男／女／其他；不便說明可留白" },
-    { id: "phone", label: "電話", placeholder: "手機或市話皆可" },
+    { id: "name", label: "姓名", placeholder: "全名或姓氏" },
+    { id: "gender", label: "性別", choices: ["男", "女", "其他", "不便說明"] },
+    { id: "phone", label: "電話", placeholder: "手機或市話" },
     { id: "lineId", label: "LINE（選填）", placeholder: "方便聯絡；沒有可留白" },
-    { id: "who", label: "前來諮詢的是", placeholder: "本人或親友代約皆可" },
+    { id: "who", label: "前來諮詢的是", placeholder: "本人或親友代約" },
     { id: "matter", label: "案由", placeholder: "例如：民事房屋漏水、刑事詐騙", multiline: true },
     { id: "amount", label: "預估涉及金額", placeholder: "例如約 30 萬；不確定可留白" },
     { id: "hearing", label: "是否有開庭日期", placeholder: "有請填日期時間；沒有可留白" },

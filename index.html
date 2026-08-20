@@ -44,7 +44,18 @@
       padding: 22px 18px 20px; box-shadow: 0 10px 30px rgba(30, 41, 59, .06);
     }
     .field { margin-bottom: 16px; }
-    label { display: block; font-size: 16px; font-weight: 700; color: var(--navy); margin: 0 0 8px; }
+    label, .field-title { display: block; font-size: 16px; font-weight: 700; color: var(--navy); margin: 0 0 8px; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+    .choice {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--input); color: var(--ink); font-size: 16px; font-weight: 600; cursor: pointer;
+    }
+    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice:has(input:checked) {
+      background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 800;
+    }
     input, textarea {
       width: 100%; min-height: 56px; border: 1px solid var(--line); border-radius: 16px;
       padding: 14px 16px; font-size: 18px; line-height: 26px; background: var(--input); color: var(--ink);
@@ -122,14 +133,37 @@
     questions.forEach((q) => {
       const wrap = document.createElement("div");
       wrap.className = "field";
-      const label = document.createElement("label");
-      label.textContent = q.label;
-      label.setAttribute("for", q.id);
-      const field = document.createElement(q.multiline ? "textarea" : "input");
-      field.id = q.id;
-      field.placeholder = q.placeholder || "";
-      wrap.appendChild(label);
-      wrap.appendChild(field);
+      if (q.choices && q.choices.length) {
+        const title = document.createElement("div");
+        title.className = "field-title";
+        title.textContent = q.label;
+        const group = document.createElement("div");
+        group.className = "choices";
+        group.setAttribute("role", "radiogroup");
+        group.setAttribute("aria-label", q.label);
+        q.choices.forEach((option) => {
+          const choice = document.createElement("label");
+          choice.className = "choice";
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = q.id;
+          radio.value = option;
+          choice.appendChild(radio);
+          choice.appendChild(document.createTextNode(option));
+          group.appendChild(choice);
+        });
+        wrap.appendChild(title);
+        wrap.appendChild(group);
+      } else {
+        const label = document.createElement("label");
+        label.textContent = q.label;
+        label.setAttribute("for", q.id);
+        const field = document.createElement(q.multiline ? "textarea" : "input");
+        field.id = q.id;
+        field.placeholder = q.placeholder || "";
+        wrap.appendChild(label);
+        wrap.appendChild(field);
+      }
       form.appendChild(wrap);
     });
     const submit = document.createElement("button");
@@ -167,7 +201,13 @@
       event.preventDefault();
       const answers = {};
       questions.forEach((q) => {
-        const value = document.getElementById(q.id).value.trim();
+        let value = "";
+        if (q.choices && q.choices.length) {
+          const checked = form.querySelector('input[name="' + q.id + '"]:checked');
+          value = checked ? checked.value.trim() : "";
+        } else {
+          value = document.getElementById(q.id).value.trim();
+        }
         if (value) answers[q.id] = value;
       });
       const errorEl = document.getElementById("form-error");
